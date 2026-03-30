@@ -2,6 +2,8 @@
 
 **Three Apple Shortcuts that let you proofread text, ask questions by typing or voice, and even ask about the webpage you're looking at — all without leaving the app you're in.**
 
+Works with a **local AI on your phone** (like LocallyAI with Qwen) or OpenAI's ChatGPT — your choice.
+
 ---
 
 ## What These Shortcuts Do
@@ -16,22 +18,48 @@ All three work from **any app** via Control Center. No switching, no copy/paste 
 
 ---
 
-## Before You Start: Get an OpenAI API Key
+## Before You Start: Choose Your AI
 
-These shortcuts use OpenAI's API (ChatGPT). You need a free API key.
+### Option A — LocallyAI (free, private, runs on your phone)
+
+This uses a local model like Qwen that runs entirely on your device. No account, no cost, no data sent anywhere.
+
+**Steps:**
+
+1. Open **LocallyAI** and load your model (e.g. Qwen 3.5 4B)
+2. Find the local API server address — look in the app under **Settings** or a menu labeled **Server**, **API**, or **Local Server**
+   - It will show something like `http://localhost:8080` or `http://127.0.0.1:1234`
+   - Write down the port number (the digits after the last colon — e.g. `8080`)
+3. Make sure the server is running before you use the shortcuts (the app needs to be open in the background)
+
+> **Note:** The model name you'll enter in the shortcuts is whatever LocallyAI shows for your loaded model — often something like `qwen3.5:4b` or just `qwen`. Check the app for the exact name.
+
+**Your API details:**
+- URL: `http://localhost:YOUR_PORT/v1/chat/completions`
+- Authorization: `Bearer local` (any text works — local servers don't check this)
+- Model: your model's name as shown in the app
+
+---
+
+### Option B — OpenAI (ChatGPT, requires account)
+
+Use this if you don't have LocallyAI, or for Shortcut 3 (which needs vision capability).
 
 1. Go to [platform.openai.com](https://platform.openai.com) and sign up or log in
 2. Click your profile icon → **API keys** → **Create new secret key**
-3. Copy the key and save it somewhere — you'll paste it into the shortcuts below
-4. Add a payment method (OpenAI requires one, but costs are tiny — fractions of a cent per use)
+3. Copy the key — you'll paste it into the shortcuts below
+4. Add a payment method (costs are tiny — fractions of a cent per use)
 
-> **Tip:** `gpt-4o-mini` is used for Shortcuts 1 & 2 (fast, cheap). Shortcut 3 uses `gpt-4o` for vision support.
+**Your API details:**
+- URL: `https://api.openai.com/v1/chat/completions`
+- Authorization: `Bearer YOUR_API_KEY_HERE`
+- Model: `gpt-4o-mini` (Shortcuts 1 & 2) / `gpt-4o` (Shortcut 3)
 
 ---
 
 ## Shortcut 1: AI Text Helper
 
-**What it does:** Grabs text you've copied, sends it to ChatGPT, and shows the response on screen.
+**What it does:** Grabs text you've copied, sends it to your AI, and shows the response on screen.
 
 **How to use it:** Copy any text (select → Copy), then open Control Center and tap this shortcut.
 
@@ -42,13 +70,19 @@ These shortcuts use OpenAI's API (ChatGPT). You need a free API key.
 3. Tap **Add Action** and search for **Get Clipboard** → add it
 4. Tap **Add Action** and search for **Get Contents of URL** → add it
    - Tap the action to expand it
-   - **URL:** `https://api.openai.com/v1/chat/completions`
+   - **URL:**
+     - LocallyAI: `http://localhost:YOUR_PORT/v1/chat/completions`
+     - OpenAI: `https://api.openai.com/v1/chat/completions`
    - **Method:** POST
    - **Headers:** tap **Add new header**
-     - Header 1 — Name: `Authorization` / Value: `Bearer YOUR_API_KEY_HERE`
+     - Header 1 — Name: `Authorization`
+       - LocallyAI value: `Bearer local`
+       - OpenAI value: `Bearer YOUR_API_KEY_HERE`
      - Header 2 — Name: `Content-Type` / Value: `application/json`
    - **Request Body:** select **JSON**
-     - Add key: `model` / Value: `gpt-4o-mini`
+     - Add key: `model`
+       - LocallyAI value: your model name (e.g. `qwen3.5:4b`)
+       - OpenAI value: `gpt-4o-mini`
      - Add key: `messages` / Value: tap the field, switch to **Array**, then add one **Dictionary** item:
        - Key: `role` / Value: `user`
        - Key: `content` / Value: tap and select **Clipboard** from the variables list
@@ -61,15 +95,14 @@ These shortcuts use OpenAI's API (ChatGPT). You need a free API key.
 8. Tap **Add Action** → search for **Get Dictionary Value** → add it
    - Key: `content`
 9. Tap **Add Action** → search for **Show Result** → add it
-   - The input should auto-connect to the previous step's output
 
-Done. Test it by copying some text, running the shortcut, and you should see ChatGPT's response in a popup.
+Done. Test it by copying some text, running the shortcut, and you should see the AI's response in a popup.
 
 ---
 
 ## Shortcut 2: AI Ask (Type or Voice)
 
-**What it does:** Asks "How do you want to ask?" — you pick Type or Speak — then sends your question to ChatGPT and shows the answer on screen.
+**What it does:** Asks "How do you want to ask?" — you pick Type or Speak — then sends your question to your AI and shows the answer on screen.
 
 ### Steps to build it:
 
@@ -90,13 +123,15 @@ Done. Test it by copying some text, running the shortcut, and you should see Cha
      - (Leave "Stop Listening" as default — it auto-stops after a pause)
 
 5. After the menu (below both branches), add **Get Contents of URL**
-   - **URL:** `https://api.openai.com/v1/chat/completions`
+   - **URL:**
+     - LocallyAI: `http://localhost:YOUR_PORT/v1/chat/completions`
+     - OpenAI: `https://api.openai.com/v1/chat/completions`
    - **Method:** POST
    - **Headers:**
-     - `Authorization`: `Bearer YOUR_API_KEY_HERE`
+     - `Authorization`: `Bearer local` (LocallyAI) or `Bearer YOUR_API_KEY_HERE` (OpenAI)
      - `Content-Type`: `application/json`
    - **Request Body:** JSON
-     - `model`: `gpt-4o-mini`
+     - `model`: your model name (LocallyAI) or `gpt-4o-mini` (OpenAI)
      - `messages`: Array → Dictionary:
        - `role`: `user`
        - `content`: select **Provided Input** from variables (this captures output from whichever branch ran)
@@ -111,9 +146,11 @@ Done. Test it by copying some text, running the shortcut, and you should see Cha
 
 ## Shortcut 3: AI See My Screen
 
-**What it does:** Takes a screenshot of whatever you're looking at, lets you type or speak your question about it, and sends both the image and your question to GPT-4o (which can see images). Shows the answer on screen.
+**What it does:** Takes a screenshot of whatever you're looking at, lets you type or speak your question about it, and sends both to an AI that can see images. Shows the answer on screen.
 
-**Example use:** You're on a webpage, tap this shortcut, ask "What is this page about?" or "Summarize the main points" — GPT-4o sees exactly what's on your screen.
+**Example use:** You're on a webpage, tap this shortcut, ask "What is this page about?" or "Summarize the main points" — the AI sees exactly what's on your screen.
+
+> **Important:** This shortcut requires a vision-capable AI model. Most local models including Qwen 3.5 4B do **not** support image input. Use **OpenAI GPT-4o** for this shortcut. If you're using LocallyAI for Shortcuts 1 & 2, you can still use this one with an OpenAI key — they're independent shortcuts.
 
 ### Steps to build it:
 
@@ -123,7 +160,7 @@ Done. Test it by copying some text, running the shortcut, and you should see Cha
    > This captures whatever is currently on screen when the shortcut runs.
 
 3. Add **Wait** → set to **0.5 seconds**
-   > Gives the screenshot action time to complete before the next step.
+   > Gives the screenshot action time to complete.
 
 4. Add **Encode Media**
    - The input should be the screenshot from the previous step
@@ -144,7 +181,7 @@ Done. Test it by copying some text, running the shortcut, and you should see Cha
    - **URL:** `https://api.openai.com/v1/chat/completions`
    - **Method:** POST
    - **Headers:**
-     - `Authorization`: `Bearer YOUR_API_KEY_HERE`
+     - `Authorization`: `Bearer YOUR_OPENAI_API_KEY`
      - `Content-Type`: `application/json`
    - **Request Body:** JSON
      - `model`: `gpt-4o`
@@ -176,7 +213,6 @@ This is what lets you trigger them from any app without switching.
 1. Open **Settings** → **Control Center**
 2. Scroll down to **More Controls**
 3. Find **Shortcuts** and tap the **+** to add it
-   > If you don't see individual shortcuts listed, tap the Shortcuts control in your Control Center after adding it — it'll let you choose which shortcut to run.
 
 **Even better — add each one individually:**
 1. In **Settings → Control Center → More Controls**, look for your shortcut names listed individually
@@ -205,11 +241,16 @@ This is what lets you trigger them from any app without switching.
 
 ## Troubleshooting
 
-**"Invalid API key" error:** Double-check you pasted the full key including the `sk-` prefix, with no extra spaces.
+**LocallyAI shortcut returns nothing or errors:**
+- Make sure the LocallyAI app is open and the server is running before triggering the shortcut
+- Double-check the port number — open LocallyAI, go to Settings/Server, and confirm the exact URL it shows
+- Confirm the model name matches exactly what's shown in the app
 
-**Blank or error response:** The JSON body must be formatted exactly right. If you get a weird result, go back into the "Get Contents of URL" step and verify the nested structure (messages → array → dictionary → role + content).
+**"Invalid API key" error (OpenAI):** Double-check you pasted the full key including the `sk-` prefix, with no extra spaces.
 
-**Screenshot shortcut shows the Control Center instead of your app:** This is normal on first run. iOS will capture Control Center in the shot. To fix it: in the Take Screenshot step, make sure there's no extra delay issue — or just swipe Control Center away quickly after tapping. The 0.5s Wait step helps minimize this.
+**Blank or error response:** The JSON body must be formatted exactly right. Go back into the "Get Contents of URL" step and verify the nested structure (messages → array → dictionary → role + content).
+
+**Screenshot shortcut captures Control Center instead of your app:** Swipe Control Center away quickly after tapping the shortcut — the 0.5s Wait step is designed to help with this, but timing can vary.
 
 **Dictation doesn't stop:** Tap the microphone icon to stop manually, or change the Stop Listening setting to "After Pause."
 
@@ -217,8 +258,8 @@ This is what lets you trigger them from any app without switching.
 
 ## Cost
 
-Extremely cheap. At OpenAI's current pricing:
-- `gpt-4o-mini` (Shortcuts 1 & 2): roughly $0.0001–$0.001 per use
-- `gpt-4o` with image (Shortcut 3): roughly $0.001–$0.01 per use depending on screenshot size
+**Shortcuts 1 & 2 with LocallyAI:** Free — runs entirely on your device.
 
-You'd have to use these hundreds of times a day to spend even $1/month.
+**Shortcut 3 (AI See My Screen) with OpenAI:**
+- `gpt-4o` with image: roughly $0.001–$0.01 per use depending on screenshot size
+- You'd have to use it hundreds of times a day to spend even $1/month
