@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI iPhone Shortcuts — Download</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 24px 16px;
+      background: #f2f2f7;
+      color: #1c1c1e;
+    }
+    h1 { font-size: 22px; margin-bottom: 4px; }
+    .subtitle { color: #6e6e73; font-size: 15px; margin-bottom: 28px; }
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+    .card h2 { font-size: 17px; margin: 0 0 6px; }
+    .card p { font-size: 14px; color: #6e6e73; margin: 0 0 16px; line-height: 1.5; }
+    .download-btn {
+      display: inline-block;
+      background: #007aff;
+      color: white;
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
+    }
+    .download-btn:active { opacity: 0.8; }
+    .notice {
+      background: #fff9c4;
+      border-radius: 12px;
+      padding: 14px 16px;
+      font-size: 14px;
+      line-height: 1.5;
+      margin-bottom: 24px;
+      color: #5a4a00;
+    }
+    .notice strong { display: block; margin-bottom: 4px; }
+    .steps {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 16px;
+      font-size: 14px;
+      line-height: 1.8;
+    }
+    .steps h2 { font-size: 17px; margin: 0 0 12px; }
+    .steps ol { margin: 0; padding-left: 20px; color: #3a3a3c; }
+    code {
+      background: #f2f2f7;
+      padding: 2px 6px;
+      border-radius: 5px;
+      font-size: 13px;
+      font-family: "SF Mono", monospace;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>AI iPhone Shortcuts</h1>
+  <p class="subtitle">Use Claude from any app — no switching, no copy/paste.</p>
+
+  <div class="notice">
+    <strong>Before you install:</strong>
+    After downloading each shortcut, you'll need to replace <code>YOUR_CLAUDE_API_KEY_HERE</code> with your real key from <a href="https://console.anthropic.com">console.anthropic.com</a>. Instructions below.
+  </div>
+
+  <div class="card">
+    <h2>1. AI Text Helper</h2>
+    <p>Copy any text, tap this shortcut in Control Center — Claude proofreads or answers your question.</p>
+    <a class="download-btn" href="AI-Text-Helper.shortcut" download>Download</a>
+  </div>
+
+  <div class="card">
+    <h2>2. AI Ask (Type or Voice)</h2>
+    <p>Choose to type or speak your question — answer appears on screen without leaving your app.</p>
+    <a class="download-btn" href="AI-Ask.shortcut" download>Download</a>
+  </div>
+
+  <div class="card">
+    <h2>3. AI See My Screen</h2>
+    <p>Takes a screenshot of what you're looking at, you ask a question, Claude sees the page and answers.</p>
+    <a class="download-btn" href="AI-See-My-Screen.shortcut" download>Download</a>
+  </div>
+
+  <div class="steps">
+    <h2>After downloading</h2>
+    <ol>
+      <li>Tap <strong>Add Shortcut</strong> when prompted by the Shortcuts app</li>
+      <li>Tap the shortcut name → <strong>Edit</strong></li>
+      <li>Find the <strong>Get Contents of URL</strong> step</li>
+      <li>Tap the <code>x-api-key</code> header value and replace <code>YOUR_CLAUDE_API_KEY_HERE</code> with your key</li>
+      <li>Tap <strong>Done</strong></li>
+      <li>Repeat for each shortcut, then add all three to Control Center in <strong>Settings → Control Center</strong></li>
+    </ol>
+  </div>
+
+</body>
+</html>
